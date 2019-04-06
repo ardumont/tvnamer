@@ -50,10 +50,11 @@ def getMoveDestination(episode):
             replace_with = Config['replace_invalid_characters_with'])
 
 
+    seriesname = makeValidFilename(episode.seriesname)
     # Calls makeValidFilename on series name, as it must valid for a filename
     if isinstance(episode, DatedEpisodeInfo):
         destdir = Config['move_files_destination_date'] % {
-            'seriesname': makeValidFilename(episode.seriesname),
+            'seriesname': seriesname,
             'year': episode.episodenumbers[0].year,
             'month': episode.episodenumbers[0].month,
             'day': episode.episodenumbers[0].day,
@@ -61,13 +62,15 @@ def getMoveDestination(episode):
             }
     elif isinstance(episode, NoSeasonEpisodeInfo):
         destdir = Config['move_files_destination'] % {
-            'seriesname': wrap_validfname(episode.seriesname),
+            'seriesname[0]': seriesname[0],
+            'seriesname': seriesname,
             'episodenumbers': wrap_validfname(formatEpisodeNumbers(episode.episodenumbers)),
             'originalfilename': episode.originalfilename,
             }
     else:
         destdir = Config['move_files_destination'] % {
-            'seriesname': wrap_validfname(episode.seriesname),
+            'seriesname[0]': seriesname[0],
+            'seriesname': seriesname,
             'seasonnumber': episode.seasonnumber,
             'episodenumbers': wrap_validfname(formatEpisodeNumbers(episode.episodenumbers)),
             'originalfilename': episode.originalfilename,
